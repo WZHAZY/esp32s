@@ -3,11 +3,9 @@
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <DHT.h>
-#include "ACS712.h"
-char auth[] = "fb1c8dd119e747bcb910f8d781af962a";
+char auth[] = "yourtoken";
 char ssid[] = "YourNetworkName";
 char pass[] = "YourPassword";
-ACS712 sensor(ACS712_30A, A0);
 #define DHTPIN 2          // What digital pin we're connected to
 
 // Uncomment whatever type you're using!
@@ -25,7 +23,6 @@ void sendSensor()
 {
   float h = dht.readHumidity();
   float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
-  float I = sensor.getCurrentDC();
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
@@ -34,7 +31,6 @@ void sendSensor()
   // Please don't send more that 10 values per second.
   Blynk.virtualWrite(V5, h);
   Blynk.virtualWrite(V6, t);
-  Blynk.virtualWrite(V7, I);
 }
 
 void setup()
